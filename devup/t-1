@@ -1,0 +1,57 @@
+flowchart TD
+    UQ["User Query<br>'Can I upgrade to enterprise mid‑cycle?'"]
+
+    subgraph HACVault ["HACVault (Hierarchical Context Memory)"]
+        direction TB
+        IL["Intent Layer<br>vector embeddings, build intent"]
+        KG["Knowledge Graph<br>Team_plan → enterprise_plan<br>requires_provision"]
+        SL["Session Layer<br>state cache (Admin/Bank A/Team Annual)"]
+        CO["Context Object<br>intents + knowledge + session<br>confidence + timestamp"]
+        PD["Pattern Detector<br>clusters query types, discovers intents"]
+        KE["Knowledge Extractor<br>entities & relations, lightweight NLP"]
+        MR["Modified Reasoning<br>expand KG nodes, optional merge"]
+        SE["Step Eviction<br>LRU + confidence, remove stale nodes"]
+        LLM["LLM Engine<br>context‑weighted generation"]
+        RPM["Role/Policy Mgmt<br>microservice‑based"]
+    end
+
+    LCM["LCM<br>Context Injection Engine"]
+    ACCA["ACCA<br>Self‑Learning System"]
+
+    subgraph Processing ["Processing Pipeline"]
+        TF["Transformer<br>LVL, context injection"]
+        CV["Connect Vec (EEV/Generator)<br>creates contextual CEVs, maps to layers"]
+        RESP["AI Response<br>content enriched, personalized"]
+    end
+
+    UQ --> IL
+    UQ --> PD
+    UQ --> KE
+
+    IL --> CO
+    KG --> CO
+    SL --> CO
+    PD --> ACCA
+    KE --> ACCA
+    ACCA --> KG
+    ACCA --> MR
+    MR --> KG
+    CO --> LLM
+    RPM --> IL
+    RPM --> SL
+
+    LLM --> TF
+    LCM -- "injects context" --> TF
+    CO --> LCM
+    TF --> CV
+    CV --> RESP
+
+    RESP --> FINAL["Final Output:<br>'Yes. You are currently on Team Annual...<br>prorated to Enterprise rate.'"]
+
+    style UQ fill:#d0e3f7,stroke:#094269,stroke-width:2px
+    style HACVault fill:#e6f0fa,stroke:#1e4d73,stroke-width:2px
+    style LCM fill:#c5ddf5,stroke:#0b3b5c,stroke-width:2px
+    style ACCA fill:#c5ddf5,stroke:#0b3b5c,stroke-width:2px
+    style Processing fill:#ffffff,stroke:#1b4b73,stroke-width:2px
+    style RESP fill:#d4e7ff,stroke:#1f5177,stroke-width:2px
+    style FINAL fill:#f0f8ff,stroke:#2d5a83,stroke-width:2px
