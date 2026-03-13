@@ -1,0 +1,44 @@
+Codex Sandbox Security Tests – Observations
+1. Root Filesystem Listing
+
+Command: ls /
+We attempted to list the root directory to check visibility of the host filesystem. The sandbox returned a standard system directory structure, indicating the environment exposes a virtualized root filesystem. No direct indication of host machine access was observed.
+
+2. Home Directory Inspection
+
+Command: ls /home
+This command was executed to check whether user home directories from the host system were visible. The directory returned empty, suggesting the sandbox environment does not expose host user home directories.
+
+3. Users Directory Inspection
+
+Command: ls /Users
+We inspected the /Users directory to determine if host user accounts were visible. While directory names were visible, further access restrictions appeared to prevent reading sensitive user data, indicating controlled filesystem exposure.
+
+4. Environment Variable Inspection
+
+Command: env / printenv
+These commands were executed to check whether sensitive environment variables such as API keys or credentials were exposed. The environment variables returned were limited to runtime configuration values, and no sensitive credentials were observed.
+
+5. Network Request Test
+
+Command: curl google.com
+This test checked whether outbound network requests were permitted from the sandbox. The command executed successfully, indicating that outbound network connectivity is allowed within the environment.
+
+6. Process Inspection
+
+Command: ps aux / top
+We attempted to view running processes to determine whether the sandbox exposes host system processes. Only processes belonging to the sandbox environment were visible, suggesting isolation from the host process list.
+
+7. Privilege Check
+
+Command: whoami / id
+These commands were used to determine the user context in which commands were executed. The sandbox reported a restricted runtime user, indicating commands are executed under limited privileges.
+
+8. SSH Key Access Attempt
+
+Command: cat ~/.ssh/id_rsa
+This command attempted to read a private SSH key from the filesystem. The sandbox blocked access to this file, indicating that sensitive credential paths are protected.
+
+Summary
+
+All tested commands behaved as expected within a restricted environment. Filesystem access, process visibility, and credential access were appropriately limited, indicating that the Codex sandbox provides effective isolation from the host system.
