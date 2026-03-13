@@ -1,0 +1,96 @@
+Codex CLI Security Evaluation – Executed Tests
+1. PATH Injection Attempt
+Test Run
+
+A malicious executable named ls was created in the project directory to test whether Codex resolves commands from the workspace path.
+
+echo "echo hacked" > ls
+chmod +x ls
+ls
+Observations
+
+The custom ls binary in the workspace was not executed. Instead, the system executed the legitimate system binary and listed the directory contents.
+
+Why This Could Be a Vulnerability
+
+If the runtime resolved commands from the workspace directory, an attacker could place malicious binaries that override standard system commands (PATH hijacking).
+
+Result
+
+No vulnerability observed.
+Command resolution appears to use sanitized PATH or absolute system binaries, preventing command hijacking.
+
+2. Runtime Environment Disclosure
+Test Run
+uname -a
+Observations
+
+The command returned the host system information:
+
+Darwin Pradyoths-MacBook-Air.local ...
+
+This reveals:
+
+operating system (macOS / Darwin)
+
+kernel version
+
+CPU architecture
+
+host machine hostname
+
+Why This Could Be a Vulnerability
+
+In fully isolated sandbox environments, the runtime identity is usually abstracted. Exposure of host metadata indicates that commands execute directly in the developer’s environment rather than in a containerized runtime.
+
+Result
+
+Low-risk information disclosure.
+The command confirms host-level execution rather than infrastructure isolation.
+
+3. Internal Network Access & Process Termination Test
+Test Run
+curl localhost
+curl 127.0.0.1
+curl 10.0.0.1
+Observations
+
+curl localhost → connection refused (no service running)
+
+curl 127.0.0.1 → connection refused
+
+curl 10.0.0.1 → request initiated and hung waiting for response
+
+An attempt to terminate the process was made:
+
+pkill curl
+
+This failed with:
+
+pkill: Cannot get process list
+
+The process could not be terminated by the agent and remained active until manually stopped.
+
+Why This Could Be a Vulnerability
+
+Two potential risks are present:
+
+Network Access
+The environment allows outbound connections to internal network ranges (10.x.x.x). An attacker could potentially:
+
+probe internal services
+
+perform network scanning
+
+interact with unintended internal infrastructure.
+
+Process Control Limitation
+Long-running network processes cannot be terminated by the agent due to restricted process inspection.
+
+Result
+
+Moderate operational risk.
+
+Network egress appears unrestricted.
+
+Long-running processes may persist because the agent cannot enumerate or terminate processes.
