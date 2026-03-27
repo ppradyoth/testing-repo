@@ -1,0 +1,74 @@
+
+
+### 🚨 Problem
+
+Today, outputs from **AI Threat Modelling** and **AI Red Teaming exercises** are primarily captured in Jira comments and discussions.
+
+This leads to:
+
+* Fragmented visibility across findings
+* Manual effort to consolidate insights
+* Limited ability to track remediation timelines or trends
+* No centralized, queryable repository of AI/ML security risks
+
+As our AI security efforts scale, this becomes a bottleneck for both **governance and execution**.
+
+---
+
+### 💡 Proposed Solution
+
+Build an **automated pipeline between Jira and Confluence** that transforms unstructured findings into a centralized, structured knowledge base.
+
+**Workflow:**
+
+* When a Jira task (Threat Modelling / Red Teaming) transitions to *Done*
+* The system extracts structured findings from the latest comment
+* Parses and normalizes them into a standard schema
+* Automatically updates a **Confluence Findings Tracker (acting as a live database)**
+
+---
+
+### 🧠 Key Capabilities
+
+* 📌 Centralized tracking of all AI/ML security findings
+* 🔍 Structured data model (Finding ID, Severity, Description, Source, etc.)
+* ⏱️ Automated timestamps and duration tracking (time-to-detect, time-to-close)
+* 🔄 Real-time updates with zero manual intervention
+* 📊 Foundation for dashboards and reporting
+
+---
+
+### 📈 Business Impact
+
+* **Improved Visibility:** Leadership gets a unified view of AI risk posture
+* **Operational Efficiency:** Eliminates manual tracking and duplication
+* **Faster Remediation:** Clear ownership and lifecycle tracking
+* **Scalability:** Supports growing volume of AI security assessments
+* **Data-Driven Decisions:** Enables trend analysis (e.g., recurring vulnerabilities, high-risk areas)
+
+---
+
+### 🔐 Strategic Value
+
+This positions the CDAO PSL team to:
+
+* Operationalize **AI security as a measurable discipline**
+* Build a **living knowledge base of adversarial patterns**
+* Lay the groundwork for advanced capabilities like:
+
+  * Automated risk scoring (CVSS for AI)
+  * OWASP Top 10 for LLMs mapping
+  * Predictive risk analytics
+
+---
+
+### ⚙️ Implementation Approach
+
+* Jira Automation → Webhook trigger on task completion
+* Lightweight service (Python/FastAPI) for parsing and transformation
+* Integration with Confluence APIs for structured updates
+* Optional backend datastore for scalability and analytics
+
+---
+
+
