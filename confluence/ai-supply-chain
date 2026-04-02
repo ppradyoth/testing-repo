@@ -1,0 +1,231 @@
+AI Supply Chain Attacks
+Case Study: LiteLLM Ecosystem Risk via Trivy-Triggered Dependency Resolution
+📌 Overview
+
+Modern AI systems rely heavily on:
+
+Open-source libraries
+Model orchestration frameworks
+Evaluation and red-teaming tools
+
+This introduces AI Supply Chain Risks, where attackers compromise dependencies to gain indirect access to AI systems.
+
+This case study focuses on a realistic and high-impact failure mode involving:
+
+LiteLLM
+Trivy
+Improper dependency versioning
+🔍 What is LiteLLM?
+
+LiteLLM is a widely used abstraction layer that:
+
+Provides a unified API for multiple LLM providers (OpenAI, Azure, Anthropic)
+Is embedded in:
+AI agents
+Prompt pipelines
+Evaluation/red-teaming frameworks
+
+👉 It acts as a central gateway to all LLM interactions, making it a high-value target
+
+🔍 What is Trivy?
+
+Trivy is a popular security scanner used to:
+
+Scan container images
+Detect vulnerabilities in dependencies
+Analyze file systems and IaC
+
+👉 It is commonly integrated into:
+
+CI/CD pipelines
+Build workflows
+Security validation steps
+⚠️ Incident Summary
+
+This was not a direct compromise of LiteLLM or Trivy, but a supply chain weakness exposed through their usage together.
+
+High-Level Flow
+AI application uses LiteLLM + supporting dependencies
+Dependencies are not strictly version-pinned
+Workflow includes Trivy scanning in CI/CD
+During install/build phase, dependencies are resolved dynamically
+A malicious or compromised package version is pulled
+Code executes within a trusted environment
+Sensitive data and LLM access paths are exposed
+🚨 Root Cause (Explicit & Precise)
+
+The issue was caused by un-pinned dependency versions, which allowed a malicious package version to be automatically installed during workflows involving Trivy, leading to arbitrary code execution inside a high-privilege AI runtime using LiteLLM.
+
+🧬 Detailed Root Cause Breakdown
+1. 📦 Loose Dependency Versioning (Primary Failure)
+
+Instead of:
+
+package==1.2.3
+
+The system allowed:
+
+package>=1.2.0
+
+or no version pinning at all.
+
+👉 Result:
+
+Any newer version (including malicious) gets installed automatically
+2. 🔗 Transitive Dependency Blind Spots
+Vulnerable package may not be directly imported
+Exists as a nested dependency
+
+👉 Developers:
+
+Lack visibility
+Cannot easily control resolution
+3. ⚙️ Dynamic Dependency Resolution in Trivy Workflows
+
+Trivy is often used alongside:
+
+Build steps
+Dependency installation
+Environment preparation
+
+👉 If dependencies are not locked:
+
+The system may fetch latest versions during scan/build stages
+4. ⚡ Automatic Code Execution via Packages
+
+Malicious packages can execute code through:
+
+setup.py
+Install hooks
+Import-time execution
+
+👉 This leads to:
+
+Immediate code execution upon installation
+5. 🔐 High-Privilege AI Runtime
+
+Because of LiteLLM:
+
+Environment contains:
+LLM API keys
+Prompt data
+Internal endpoints
+
+👉 Result:
+
+Attackers gain access to critical AI infrastructure
+⚔️ Attack Chain (Step-by-Step)
+1. Attacker publishes malicious package version on PyPI
+2. Version satisfies loose constraint (>= / latest)
+3. CI/CD pipeline runs (includes Trivy scanning)
+4. Dependencies are resolved dynamically
+5. Malicious package is installed
+6. Code executes during install/runtime
+7. Environment variables and secrets are accessed
+8. LiteLLM interactions are intercepted or manipulated
+🔥 Why This is Critical in AI Systems
+Traditional Systems	AI Systems
+Limited secrets	High-value API keys
+Static execution	Dynamic agent workflows
+Isolated components	Centralized LLM gateway (LiteLLM)
+
+👉 Impact includes:
+
+API key exfiltration
+Prompt leakage
+Model manipulation
+Cost abuse (unauthorized LLM usage)
+🧪 Detection Challenges
+No obvious failures or crashes
+Malicious logic may be:
+Obfuscated
+Triggered conditionally
+Traditional scanners:
+Do not detect install-time execution
+Assume dependencies are trusted
+🛡️ Recommendations (AI Red Team → Developers)
+1. 📌 Enforce Strict Dependency Pinning
+
+Use:
+
+package==x.y.z
+Maintain lock files:
+requirements.txt
+poetry.lock
+2. 🔍 Full Dependency Visibility
+Generate dependency trees
+Audit transitive dependencies
+Monitor for:
+Unexpected updates
+Maintainer changes
+3. 🧱 Isolate Execution Environments
+Run in:
+Containers (Docker)
+Sandboxed runtimes
+Restrict:
+Network access
+File system permissions
+4. 🔐 Secure Secrets Handling
+Store keys in:
+Vault / Secrets Manager
+Avoid exposing secrets to:
+Build or scan processes
+5. 🚫 Prevent Unsafe Package Execution
+Avoid executing:
+Unverified install scripts
+Prefer:
+Pre-built, trusted artifacts
+6. 📦 Use Internal Package Registries
+Mirror dependencies internally
+Approve packages before usage
+7. 🧪 Runtime Monitoring
+Detect:
+Unexpected outbound traffic
+Suspicious API usage
+Log:
+Prompt flows
+LLM interactions
+8. 🧠 AI-Specific Protections
+Add:
+Prompt validation
+Output filtering
+Monitor for:
+Prompt injection anomalies
+🚨 Red Team Guidance
+
+When demonstrating this vulnerability:
+
+PoC Approach
+Create a controlled malicious package that:
+Logs environment variables
+Simulates data exfiltration
+Show Impact
+Exposure of:
+API keys
+Prompt data
+Manipulation of:
+LLM responses
+
+👉 Focus on:
+
+Business impact
+Realistic exploitation path
+📚 References
+LiteLLM Documentation & GitHub
+Trivy Documentation
+OWASP Top 10 for LLM Applications
+PyPI Security Best Practices
+Dependency Confusion Research by Alex Birsan
+NIST Secure Software Development Framework (SSDF)
+✅ Key Takeaway
+
+This incident was not about a single vulnerable tool — it was about implicit trust in external dependencies combined with non-deterministic builds.
+
+Final Insight:
+
+Unpinned Dependencies
++ Dynamic Resolution (via CI/CD + Trivy workflows)
++ Code Execution on Install
++ High-Privilege AI Environment (LiteLLM)
+= Full Supply Chain Compromise Risk
+
