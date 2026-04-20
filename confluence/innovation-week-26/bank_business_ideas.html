@@ -1,0 +1,167 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0}
+.grid{display:grid;grid-template-columns:1fr;gap:20px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;cursor:pointer;transition:border-color .15s}
+.card:hover{border-color:var(--color-border-secondary)}
+.card.open{border-color:var(--color-border-primary)}
+.card-top{padding:1.25rem 1.25rem 1.25rem}
+.impact-row{display:flex;gap:8px;align-items:baseline;margin-bottom:12px;flex-wrap:wrap}
+.big-impact{font-size:24px;font-weight:500;color:var(--color-text-success);line-height:1}
+.impact-sub{font-size:12px;color:var(--color-text-secondary)}
+.header-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.badge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px}
+.title{font-size:16px;font-weight:500;color:var(--color-text-primary);line-height:1.4;margin-bottom:6px}
+.gut{font-size:13px;color:var(--color-text-secondary);line-height:1.65}
+.chevron{color:var(--color-text-tertiary);font-size:20px;transition:transform .2s;user-select:none;margin-top:2px}
+.card.open .chevron{transform:rotate(180deg)}
+.body{display:none;flex-direction:column;border-top:0.5px solid var(--color-border-tertiary)}
+.card.open .body{display:flex}
+.sec{padding:1rem 1.25rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.sec:last-child{border-bottom:none}
+.sl{font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.sv{font-size:13px;color:var(--color-text-secondary);line-height:1.65}
+.money{background:var(--color-background-success);padding:1rem 1.25rem;border-bottom:0.5px solid var(--color-border-success)}
+.money .sl{color:var(--color-text-success)}
+.money .sv{color:var(--color-text-success)}
+.warn{background:var(--color-background-warning);padding:1rem 1.25rem;border-bottom:0.5px solid var(--color-border-warning)}
+.warn .sl{color:var(--color-text-warning)}
+.warn .sv{color:var(--color-text-warning)}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.m{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px}
+.mv{font-size:17px;font-weight:500;color:var(--color-text-primary)}
+.ml{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.quote{font-size:14px;font-style:italic;color:var(--color-text-primary);line-height:1.6;padding:10px 0 4px}
+.devbtn{font-size:12px;padding:6px 14px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-secondary);cursor:pointer;margin-top:10px}
+.devbtn:hover{color:var(--color-text-primary)}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Banking business innovation ideas — thinking from the core of what a bank is</h2>
+<div class="grid" id="grid"></div>
+</div>
+
+<script>
+const ideas=[
+  {
+    pillar:"Customer & Client",pb:"#FAEEDA",pt:"#633806",
+    impact:"£2–8B",
+    impactWhat:"addressable untapped lending market per large bank",
+    title:"The creditworthy invisible: 14 million UK adults are creditworthy but unscorable — and your bank walks past them every day",
+    gut:"Credit scores were designed in 1989. They measure debt repayment history. If you have no debt history — recent immigrant, young adult, self-employed with lumpy income, someone who paid cash their whole life — you're invisible. Not risky. Invisible. Banks decline or ignore them. Yet their actual financial behaviour — rent paid on time for 7 years, consistent savings, stable income flows — is sitting in your own systems. You just never looked at it through a credit lens.",
+    problem:"A bank holds current account data on millions of people it has never lent to. Inside that data: 84 months of rent credits hitting on the 1st of every month without fail. Grocery spend consistent with a stable household. Salary from the same employer for 6 years. No overdraft use. This person is an exceptional credit risk by any rational measure. Your credit model has never seen them because they've never had a credit card. They get declined. They go to a high-cost lender. You lost a 30-year lending relationship to a payday lender.",
+    insight:"The bank already has the data to underwrite these customers. It chooses not to use it because the scoring model is a third-party black box that only accepts traditional credit inputs. The innovation is not a new data source. It is using your own transaction data as a credit signal — which you have been legally permitted to do and have never done at scale.",
+    mechanism:"A 'behavioural credit underwriting' engine that reads current account transaction history and produces an alternative credit score: rent consistency, income stability, savings behaviour, spending discipline, bill payment punctuality — all visible in transactions, none of them in a credit bureau. This score runs alongside traditional scoring. Where bureau score is absent or thin, behavioural score leads. The model is trained on existing customers where both scores exist — validating behavioural score against actual repayment history.",
+    metrics:[{v:"14M",l:"UK adults with thin/no credit file"},{v:"67%",l:"of self-employed declined by traditional scoring"},{v:"£1,800",l:"avg annual revenue per new lending customer"}],
+    businessCase:"14 million invisible creditworthy adults in the UK alone. Even capturing 5% = 700,000 new lending customers × £1,800 annual revenue = £1.26B in new annual revenue. These customers have 0% competitive pressure — no other bank is offering them credit. Loyalty is total. Lifetime value is extraordinary.",
+    demo:"Take a real anonymised current account with no credit history. Run bureau score: 'No score — insufficient data, decline.' Run behavioural score: 7 years of on-time rent, stable income, growing savings buffer, zero missed bills. Behavioural score: 742 — prime lending tier. Show the product that customer could have been offered 3 years ago. Show the revenue left on the table. Show how many accounts in your own portfolio have this exact profile today.",
+    quote:"'This customer has paid rent on time for 84 consecutive months. We've been their bank for all 84 of them. We've never offered them credit. A payday lender has.'"
+  },
+  {
+    pillar:"Data & AI",pb:"#E6F1FB",pt:"#0C447C",
+    impact:"£500M–2B",
+    impactWhat:"in misallocated capital freed or redeployed annually",
+    title:"The capital weather forecast: your bank prices risk on yesterday's weather — what if you could see the storm 18 months out?",
+    gut:"Banks hold capital against risk. The amount of capital is calculated from models trained on historical loss data — what happened in 2008, 2015, 2020. But economic conditions are forward-looking. A bank that can accurately forecast the credit risk environment 12–18 months ahead can hold precisely calibrated capital — not the overcautious buffer built from fear of the last crisis, and not the undercapitalised optimism that precedes the next one.",
+    problem:"Capital models are backward-looking by construction. Regulators accept this because forward-looking models are hard to validate. But the data for a forward-looking signal exists and is not being used: real-time transaction flows across millions of customers are an extraordinarily sensitive leading indicator of economic stress — more granular, more current, and more geographically precise than any macroeconomic data the Bank of England publishes.",
+    insight:"Your transaction data is a real-time economic sensor network. 8 million customers' spending, saving, and borrowing behaviour is the economy — not a lagging indicator of it. A decline in discretionary spending across a specific postcode sector, combined with rising balance-to-income ratios and increased overdraft use, predicts credit stress in that cohort 9–14 months before it appears in default rates. You are sitting on the world's most precise economic early-warning system and using it for fraud detection.",
+    mechanism:"A macro-risk signal engine that aggregates anonymised transaction patterns into a proprietary economic stress index — by geography, by demographic cohort, by industry sector. This index feeds capital allocation models with a forward-looking stress signal 12–18 months ahead of observable defaults. In benign environments: capital is deployed more aggressively into lending. In early-stress signals: the bank tightens criteria and builds buffers before the storm arrives — not after.",
+    metrics:[{v:"£50B+",l:"typical RWA for large UK bank"},{v:"1–2%",l:"capital efficiency gain = £500M–1B freed"},{v:"18 months",l:"forward signal vs current lagging models"}],
+    businessCase:"A 1% improvement in capital allocation efficiency on £50B RWA frees £500M. Deploy that into lending at 4% NIM = £20M additional annual revenue. Avoid one credit cycle miscalibration (like 2007–2008 undercapitalisation) = existential value. The proprietary nature of the signal is also a competitive moat — no other bank has your customer base as their economic sensor.",
+    demo:"Show your transaction-derived stress index for 2021–2022 overlaid against actual default rates that emerged in 2022–2023. Show that the index predicted the stress inflection point 14 months before defaults appeared in the data. Show what a capital model fed by this signal would have done differently. Show the capital position of a bank using this signal vs one using traditional models entering the stress period.",
+    quote:"'We had 14 months of warning in our own data. Our capital model was looking at 2008 instead. We held the wrong buffer going into 2022. We will not do it again.'"
+  },
+  {
+    pillar:"Customer & Client",pb:"#FAEEDA",pt:"#633806",
+    impact:"£300M–1.2B",
+    impactWhat:"SME revenue at risk from relationship vacuum",
+    title:"The SME relationship desert: your business bank abandoned relationship banking in 2015. The gap is still open.",
+    gut:"SME banking is the most profitable, most loyal, and most abandoned segment in UK banking. Post-2008 branch closures and digital transformation removed relationship managers from all but the top 500 business customers. 5.5 million SMEs now receive product-only banking — no advice, no proactive support, no one who knows their business. They are profitable, underserved, and looking for a reason to stay.",
+    problem:"An SME with £2M turnover has a business current account, a loan, and possibly FX. That's it. Their bank has no view of their supply chain, their seasonal cashflow patterns, their growth trajectory, or their upcoming financing needs. When they need a £500K facility to fund a contract win, they start from scratch — credit application, 6 weeks, uncertainty. They've been a customer for 11 years. The bank behaves as if it met them yesterday.",
+    insight:"The bank has 11 years of transaction data that tells a complete story about this business: seasonal patterns, supplier relationships, customer concentration, growth rate, margin trends, cashflow predictability. A human relationship manager with this data could provide advice that feels like a trusted CFO. The bank has the data and no relationship manager. An AI-augmented relationship model could deliver the CFO-quality insight at scale — to every SME, not just the top 500.",
+    mechanism:"An 'AI relationship manager' that reads 3–5 years of business transaction data and continuously generates: cashflow forecasts personalised to that business's actual patterns, proactive financing recommendations timed to when the business will need capital (before they ask), supply chain risk flags when a key supplier shows stress signals, and benchmarking against anonymised peers in the same sector and size band. Delivered through the business banking app as proactive insights — not a chatbot, not a dashboard. Actionable intelligence, timed to when it matters.",
+    metrics:[{v:"5.5M",l:"UK SMEs — 99% without relationship manager"},{v:"£8,500",l:"avg annual revenue per SME banking relationship"},{v:"3×",l:"higher LTV when proactive advice delivered"}],
+    businessCase:"Retaining 10% more SMEs through proactive relationship intelligence on a base of 500,000 business customers = 50,000 × £8,500 = £425M revenue protected annually. Cross-sell uplift from timely, relevant product recommendations (the business is about to need a facility — you see it 6 weeks before they do) adds 30–40% to that. Total addressable impact per large bank: £300M–1.2B.",
+    demo:"Show an SME's 3 years of transaction data. Show the AI reading it: 'This business has a Q1 cashflow gap of £180K every year driven by 60-day payment terms with their three largest customers. They have bridged it with an overdraft for 3 consecutive years. They have never been offered an invoice finance facility. Recommended action: proactive offer of a £250K invoice finance facility in November, before the Q1 gap arrives. Revenue to bank: £18,750 per year. Probability of acceptance: 84% based on peer behaviour.' Show that this analysis took 0.4 seconds on 3 years of data.",
+    quote:"'This business has borrowed £180K from its overdraft every January for three years. We have never once contacted them in October. We just waited for them to come to us, stressed, at the worst possible moment.'"
+  },
+  {
+    pillar:"Data & AI",pb:"#E6F1FB",pt:"#0C447C",
+    impact:"£400M–900M",
+    impactWhat:"annual fraud losses — the kind no model catches",
+    title:"The authorised push payment blind spot: fraud your customers commit willingly — and your systems applaud",
+    gut:"APP fraud — Authorised Push Payment fraud — is now the largest fraud category in UK banking by value. The customer, a real authenticated user, is manipulated into authorising a transfer to a fraudster. The payment is legitimate by every technical measure: right credentials, right device, right biometrics. Your fraud model sees a clean transaction and approves it with 98% confidence. The customer loses £45,000. The bank is increasingly liable. The model is useless for this category entirely.",
+    problem:"Every fraud system in banking is built on anomaly detection: does this look like this customer's normal behaviour? APP fraud defeats this completely because the customer IS behaving normally — they are making a payment. The anomaly is not in the transaction. It is in the conversation that preceded the transaction, which took place on WhatsApp, on a phone call, in an email — entirely outside the bank's visibility.",
+    insight:"APP fraud has a transaction signature that is distinct from normal large payments: elevated urgency, first-time payee, round number, just-enrolled payee account, payment made immediately after a period of account inactivity or unusual app navigation (checking balance repeatedly, visiting FAQs about payments). The signal is not 'does this look like fraud?' It is 'does this look like a person who has just been convinced of something?'",
+    mechanism:"A 'pre-authorisation cognitive state' model that reads the session behaviour immediately preceding a large novel payment: time spent on the payment screen, FAQ pages visited in the session, navigation patterns, time of day vs customer baseline, counterparty account age, whether the payee account was registered in the last 72 hours. Combines with real-time counterparty intelligence — is this receiving account part of a known mule network? Has it received multiple first-time payments this week? A friction injection — not a block — at the precise moment of authorisation: a 10-second animated 'checking your payment' screen, a single targeted question, a cool-off period for payments above a threshold to first-time payees.",
+    metrics:[{v:"£460M",l:"UK APP fraud losses 2023"},{v:"76%",l:"of victims said they felt rushed"},{v:"£3,000",l:"avg loss per APP fraud victim"}],
+    businessCase:"UK APP fraud losses: £460M in 2023. New PSR rules make banks liable for reimbursement up to £415K per claim from October 2024. For a bank processing 15% of UK payments, exposure is £69M annually and rising. Reducing APP fraud by 40% through pre-authorisation friction = £27M direct loss reduction. Regulatory compliance value: avoiding systemic liability designation. Reputational value: being the bank that protects customers from scams is a category-defining position.",
+    demo:"Show a real APP fraud session replay (anonymised). Customer opens app. Checks balance 4 times in 6 minutes. Visits 'how to make a payment' FAQ — they clearly have been told to do this by someone. Navigates to new payee setup. Enters account registered 48 hours ago. Enters £38,500 — round number, well above their usual maximum. Normal fraud score: 0.12 (approved). Pre-authorisation cognitive state score: 0.87 (high manipulation probability). Friction injected: 24-hour cooling period with a single message: 'Payments over £10,000 to new payees have a 24-hour review period. If someone has asked you to make this payment urgently, please call us before proceeding.' Customer calls. Fraud prevented.",
+    quote:"'Our fraud model gave this transaction a 98% legitimacy score. The customer had visited our payments FAQ twice in the same session and was sending £38,500 to an account opened 48 hours ago. We approved it in 0.3 seconds.'"
+  },
+  {
+    pillar:"Employee & Talent",pb:"#FBEAF0",pt:"#72243E",
+    impact:"£100–600M",
+    impactWhat:"trapped productivity in human decisions that AI could co-pilot",
+    title:"The 10,000 analysts who copy-paste: your knowledge workers spend 60% of their time gathering — not thinking",
+    gut:"Walk into any credit risk, compliance, operations, or audit team in a large bank. Every analyst is doing the same thing: pulling data from System A, formatting it for System B, cross-referencing it with a policy document, writing a summary that 80% follows a known template, then waiting for someone senior to read it. The thinking — the actual judgement — is maybe 20 minutes of a 3-hour task. The rest is assembly. Banks employ armies of highly educated people to be expensive document assemblers.",
+    problem:"The problem is not that people are lazy or that processes are bad. It is that every knowledge workflow in a bank was designed before the information existed in digital form. The current account review process was designed when an analyst had to physically retrieve a folder. It still runs the same way. The trigger for redesign has never been pulled because the process works — just slowly, expensively, and at massive scale.",
+    insight:"Every structured knowledge task in a bank follows a retrievable template: here is the data you need, here is how you interpret it, here is the format of the output, here is the decision criteria. If the template is known, the assembly can be automated. The human adds judgement at the decision point — not at the assembly point. Separating assembly from judgement is the entire opportunity.",
+    mechanism:"A 'knowledge workflow autopilot' — not a chatbot, not an RPA bot, not a summariser. A domain-specific co-pilot for each major knowledge workflow: credit review, regulatory reporting, audit sampling, customer complaint investigation, supplier risk assessment. For each workflow: the co-pilot assembles all required data, applies the known interpretive framework, produces a structured draft with confidence scores on each element, and presents the analyst with a decision-ready package — highlighting only the elements that require genuine human judgement. The analyst reviews and decides in 15 minutes instead of 3 hours.",
+    metrics:[{v:"10,000+",l:"knowledge workers in a large bank"},{v:"60%",l:"of time spent on assembly vs judgement"},{v:"£65K",l:"avg fully-loaded cost per knowledge worker"}],
+    businessCase:"10,000 knowledge workers × £65K avg cost × 60% assembly time = £390M annually spent on information assembly. Automating 70% of that assembly = £273M in redeployable capacity — not headcount reduction, but the same people making 3× as many decisions, reviewing 3× as many cases, catching 3× as many issues. In compliance alone, that means your second line can cover 3× the risk surface with the same team.",
+    demo:"Show a credit analyst's current workflow for a £500K SME loan review: 2.5 hours, 7 systems, 4 documents manually cross-referenced, a 3-page summary written from scratch. Show the co-pilot version: analyst opens the case, the co-pilot has already pulled all 7 data sources, cross-referenced the policy document, flagged two anomalies requiring human judgement, and drafted the summary. Analyst reviews the two flagged anomalies. Makes a decision. Total time: 18 minutes. Quality: higher — the co-pilot didn't miss the supplier concentration risk buried in transaction data that the analyst, on their 11th case of the day, would have skimmed.",
+    quote:"'We have 10,000 people whose job title says analyst but whose actual job is assembler. They assemble information so a decision can be made. We have never asked whether the assembly needs to be human.'"
+  },
+  {
+    pillar:"Cloud & Infra",pb:"#EAF3DE",pt:"#27500A",
+    impact:"£200M–1B",
+    impactWhat:"in systemic settlement risk — the overnight exposure nobody is watching",
+    title:"The settlement black hole: every night your bank has £200M+ in unreconciled positions that only a human in the morning will find",
+    gut:"Between market close and the next morning's settlement confirmation, a large bank holds billions in positions that are neither confirmed nor failed — they are in a state of quantum uncertainty. Reconciliation is a morning activity. Exceptions are discovered at 8am. By then, the opportunity to act is constrained, the counterparty is annoyed, and the regulatory clock has started. The entire overnight window — 14 hours of global market activity — is operationally blind.",
+    problem:"Settlement operations were designed around business hours. Reconciliation is a batch process. Exception management is a morning queue. But global markets don't close — Asian sessions open while European settlement is still pending. A failed settlement discovered at 8am London time has already cost 14 hours of interest, generated a counterparty relationship event, and potentially triggered a regulatory reporting obligation. The discovery latency is the cost.",
+    insight:"Failed and failing settlements have precursor signals visible hours before they become failures: partial matching, funding shortfalls in the counterparty's account, unusual cancellation patterns, custodian messages that indicate a probable fail. These signals are in your systems at 11pm. Nobody is reading them. The entire overnight window is an unmonitored risk accumulation period that a real-time exception engine could make as visible as the trading floor.",
+    mechanism:"A continuous settlement intelligence layer that monitors every in-flight position 24/7: matching status, funding probability, counterparty behavioural signals, custodian message parsing, interest cost accumulation on unconfirmed positions. Exceptions are triaged and routed in real time — not queued for morning. High-probability fails trigger automated counterparty outreach at 2am if that prevents a settlement failure at 9am. The overnight shift becomes a risk management function, not a monitoring function.",
+    metrics:[{v:"£200B+",l:"daily settlement value at large UK bank"},{v:"0.1%",l:"fail rate = £200M in daily at-risk positions"},{v:"14 hours",l:"current avg detection latency for overnight fails"}],
+    businessCase:"A 0.1% settlement fail rate on £200B daily volume = £200M in failing or failed positions per day. Each failed settlement costs: interest (£200M × 5% / 365 = £27K per day per position), operational cost (£2–5K per exception to resolve), counterparty relationship degradation, and potential regulatory reporting. Reducing fail rate by 30% through real-time intervention = £6M+ annual direct cost saving. Eliminating the regulatory tail risk of systemic late settlement: unquantifiable but material.",
+    demo:"Show the overnight settlement dashboard at 11pm: 847 positions in flight, 23 showing precursor signals for probable fail. Show what currently happens: nothing, until 8am. Show the real-time layer: 23 positions triaged by probability and value. Top 3 flagged for automated counterparty message. 2 resolved by 1am. 1 escalated to on-call operations. Morning queue: 20 instead of 23. Interest cost saved: £140K. One counterparty relationship preserved. One regulatory clock that never started.",
+    quote:"'At 11pm last Tuesday we had 23 positions showing clear signals of probable settlement failure. We discovered all 23 at 8:07am the next morning. Every hour of that gap has a cost. We have been paying it for decades.'"
+  },
+];
+
+const g=document.getElementById("grid");
+ideas.forEach(idea=>{
+  const c=document.createElement("div");c.className="card";
+  c.innerHTML=`<div class="card-top">
+    <div class="impact-row"><span class="big-impact">${idea.impact}</span><span class="impact-sub">${idea.impactWhat}</span></div>
+    <div class="header-row">
+      <div>
+        <div class="badges"><span class="badge" style="background:${idea.pb};color:${idea.pt}">${idea.pillar}</span></div>
+        <div class="title">${idea.title}</div>
+        <div class="gut" style="margin-top:6px">${idea.gut}</div>
+      </div>
+      <span class="chevron">&#8964;</span>
+    </div>
+  </div>
+  <div class="body">
+    <div class="sec"><div class="sl">The actual problem</div><div class="sv">${idea.problem}</div></div>
+    <div class="sec"><div class="sl">The insight</div><div class="sv">${idea.insight}</div></div>
+    <div class="sec"><div class="sl">How it works</div><div class="sv">${idea.mechanism}</div></div>
+    <div class="money">
+      <div class="sl">Business case</div>
+      <div class="metrics">${idea.metrics.map(m=>`<div class="m"><div class="mv">${m.v}</div><div class="ml">${m.l}</div></div>`).join("")}</div>
+      <div class="sv">${idea.businessCase}</div>
+    </div>
+    <div class="warn"><div class="sl">The demo</div><div class="sv">${idea.demo}</div></div>
+    <div class="sec">
+      <div class="sl">The line that wins the room</div>
+      <div class="quote">${idea.quote}</div>
+      <button class="devbtn" onclick="sendPrompt('Build a full innovation week pitch document for: ${idea.title.replace(/'/g,"\\'")}')">Build full pitch doc ↗</button>
+    </div>
+  </div>`;
+  c.querySelector(".card-top").addEventListener("click",()=>c.classList.toggle("open"));
+  g.appendChild(c);
+});
+</script>

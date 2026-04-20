@@ -1,0 +1,187 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0}
+.intro{font-size:13px;color:var(--color-text-secondary);line-height:1.7;margin-bottom:1.5rem;padding:1rem 1.25rem;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);border-left:3px solid var(--color-border-info)}
+.section-head{font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin:1.5rem 0 .75rem}
+.grid{display:grid;grid-template-columns:1fr;gap:14px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;cursor:pointer;transition:border-color .15s}
+.card:hover{border-color:var(--color-border-secondary)}
+.card.open{border-color:var(--color-border-primary)}
+.top{padding:1.1rem 1.25rem;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start}
+.tl{display:flex;flex-direction:column;gap:7px}
+.tagrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.tag{font-size:11px;font-weight:500;padding:2px 9px;border-radius:20px}
+.impact{font-size:20px;font-weight:500;color:var(--color-text-success);line-height:1}
+.isub{font-size:11px;color:var(--color-text-secondary);margin-top:1px}
+.title{font-size:15px;font-weight:500;color:var(--color-text-primary);line-height:1.4}
+.sting{font-size:13px;color:var(--color-text-secondary);line-height:1.6;font-style:italic}
+.chev{color:var(--color-text-tertiary);font-size:18px;transition:transform .2s;user-select:none;margin-top:2px}
+.card.open .chev{transform:rotate(180deg)}
+.body{display:none;flex-direction:column;border-top:0.5px solid var(--color-border-tertiary)}
+.card.open .body{display:flex}
+.sec{padding:.9rem 1.25rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.sec:last-child{border-bottom:none}
+.sl{font-size:11px;font-weight:500;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.sv{font-size:13px;color:var(--color-text-secondary);line-height:1.65}
+.sv b{font-weight:500;color:var(--color-text-primary)}
+.flash{background:var(--color-background-warning);padding:.9rem 1.25rem;border-bottom:0.5px solid var(--color-border-warning)}
+.flash .sl{color:var(--color-text-warning)}
+.flash .sv{color:var(--color-text-warning)}
+.money{background:var(--color-background-success);padding:.9rem 1.25rem;border-bottom:0.5px solid var(--color-border-success)}
+.money .sl{color:var(--color-text-success)}
+.money .sv{color:var(--color-text-success)}
+.q{font-size:14px;font-style:italic;color:var(--color-text-primary);line-height:1.6;padding:6px 0 2px}
+.devbtn{font-size:12px;padding:5px 13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-secondary);cursor:pointer;margin-top:8px}
+.devbtn:hover{color:var(--color-text-primary)}
+</style>
+
+<div class="wrap">
+<h2 class="sr-only">Coverage and Contacts innovation ideas for banking CRM</h2>
+
+<div class="intro">
+Coverage and Contacts has two distinct failure modes in banking. <b>Coverage</b> is about which clients are assigned to which bankers — and the silent assumption that assignment equals relationship. <b>Contacts</b> is about who inside the client actually matters, who's been spoken to, and who's making decisions that your banker has never met. Both are broken in the same fundamental way: they are treated as administrative records, not as living intelligence.
+</div>
+
+<div class="section-head">Coverage failures</div>
+<div class="grid" id="coverage-grid"></div>
+
+<div class="section-head" style="margin-top:2rem">Contact failures</div>
+<div class="grid" id="contacts-grid"></div>
+
+</div>
+
+<script>
+const coverageIdeas = [
+  {
+    theme:"Coverage & AI",
+    themeColor:{bg:"#E6F1FB",tc:"#0C447C"},
+    killTag:"Coverage mirage",
+    impact:"£300–900M",
+    impactWhat:"revenue in uncovered or mis-covered relationships",
+    title:"Coverage on paper. Silence in practice. Your CRM says every client is covered. Your revenue says otherwise.",
+    sting:"A client is assigned to an RM. The last meaningful interaction was 14 months ago. By every CRM metric, that client is 'covered'. By every relationship metric, they have been abandoned. The gap between assigned coverage and actual coverage is the single biggest silent revenue leak in relationship banking — and no system has ever measured it.",
+    problem:"Coverage models are headcount models. A client gets assigned, the assignment box is ticked, the coverage report goes green. Nobody asks: is this RM actually engaging? At what depth? On what topics? Is the client responsive? Are they bringing new business or are they shrinking? Coverage is treated as a static allocation problem when it is a dynamic relationship health problem.",
+    insight:"Real coverage has three dimensions that current CRM captures zero of: <b>frequency</b> (how often genuine contact happens), <b>depth</b> (is the RM having product conversations or just check-in calls), and <b>reciprocity</b> (is the client initiating, or only responding when called?). A client who hasn't called their RM unprompted in 18 months is not covered — they are placated. The distinction is worth hundreds of millions.",
+    mechanism:"A <b>Coverage Quality Index (CQI)</b> — a live score per client built from interaction metadata: call frequency, email response latency, meeting initiation direction (who called whom), topics discussed (extracted from call transcripts), product conversations vs relationship conversations, NPS trajectory. Green on the CQI means the client is genuinely engaged. Red means they are assigned but drifting. The RM and their manager see this in real time — not in a quarterly review after the client has already decided to move.",
+    demo:"Show the coverage dashboard. 340 clients — all green on assignment. Apply CQI. 87 turn amber. 23 turn red. One red client: £45M AUM, last RM-initiated call 11 months ago, last client-initiated contact never, last product conversation 22 months ago. The CRM says 'covered'. The client is six weeks from leaving. Nobody knew.",
+    impact_detail:"A bank with £20B in managed AUM. If 7% of clients are in silent drift at any moment = £1.4B in at-risk assets. Recovering 30% of drifting relationships through early intervention = £420M AUM retained. At 0.8% management fee = £3.4M annual fee income protected. For a large bank: £300–900M.",
+    quote:"'87 of our clients turned red the moment we started measuring actual coverage instead of assigned coverage. We had been reporting 100% coverage to the board for three years.'"
+  },
+  {
+    theme:"Coverage & Data",
+    themeColor:{bg:"#EAF3DE",tc:"#27500A"},
+    killTag:"White space blindness",
+    impact:"£500M–2B",
+    impactWhat:"in uncaptured wallet share across existing client base",
+    title:"Your client has £40M with you. They have £200M somewhere else. You have never once asked why.",
+    sting:"Wallet share in banking is the most important number nobody is measuring correctly. Banks estimate it from self-reported data and industry benchmarks. They almost never know — in real time, per client — how much of a client's total financial relationship they actually hold. The gap between what they hold and what they could hold is the single largest addressable revenue opportunity in relationship banking. It is also completely invisible.",
+    problem:"Current wallet share analysis is annual, survey-based, and relationship-manager-dependent. The RM asks the client. The client approximates. The number goes into the CRM. Nobody validates it. Nobody tracks whether it's moving. Nobody knows if the client quietly moved £50M to a competitor last quarter because they got a better rate on their FX book and nobody noticed.",
+    insight:"Wallet share movement leaves signals before it leaves the bank. A client reducing the average size of transactions, concentrating flows through fewer products, reducing the frequency of new mandates, asking fee questions they've never asked before — these are wallet share compression signals visible 6–9 months before an explicit conversation about moving business. The bank is looking at last year's survey while the wallet is walking out the door this quarter.",
+    mechanism:"A <b>Wallet Signal Monitor</b> — a real-time model that tracks wallet share proxies per client: transaction flow volume trajectory, product breadth trend, fee sensitivity signals, counterparty diversity in payments (are they now routing flows through a competitor?), mandate frequency. Each client has a wallet health score that updates weekly. A declining score triggers a coverage review — not a campaign, a targeted conversation by the RM armed with the specific signals: 'I noticed your FX flow volumes have dropped 30% in the last quarter — is there something we should be talking about?'",
+    demo:"Show a corporate client. Wallet share estimated at 35% from last year's RFP. Apply wallet signal monitor: FX flows down 28% in 6 months, cash management mandate not renewed, two new payment counterparties appearing in transaction data (both competitor bank sort codes). Real-time wallet share estimate: 19% and falling. The RM has not been alerted. The next scheduled call is in 8 weeks. Show what the RM could say today vs what they'll say in 8 weeks after the relationship has deteriorated further.",
+    impact_detail:"Large bank with 2,000 corporate clients averaging £80M in managed wallet. Estimated wallet share: 40%. If wallet signal monitor identifies 15% of clients in active wallet compression = 300 clients × £80M × 10% wallet loss in progress = £2.4B in wallet at risk. Recovering 25% through timely RM intervention = £600M wallet retained. At 0.4% average revenue yield = £2.4M annual revenue protected. Scaled across the full book: £500M–2B.",
+    quote:"'We thought we had 35% wallet share. The monitor showed 19% and falling. The client had quietly moved their FX book three months ago. We found out because we looked at the data. Not because anyone told us.'"
+  },
+  {
+    theme:"Coverage & Talent",
+    themeColor:{bg:"#FBEAF0",tc:"#72243E"},
+    killTag:"Coverage succession blindness",
+    impact:"£150–600M",
+    impactWhat:"in relationship value destroyed by unplanned coverage transitions",
+    title:"You plan succession for the CEO. You plan nothing for the RM who holds your 40 most valuable client relationships.",
+    sting:"Every bank has a succession plan for its C-suite. No bank has a succession plan for its relationship managers. Yet the departure of a single senior RM can trigger the loss of £200–500M in managed relationships, a 2-year relationship rebuilding cycle, and a competitor gaining a foothold in accounts they could never otherwise reach. RM succession is the highest-impact, lowest-managed transition risk in relationship banking.",
+    problem:"Coverage transitions are reactive. An RM hands in their notice. HR is notified. A replacement is found or an existing RM absorbs the book. The clients get a call. Some stay. Some don't. The ones who leave do so in the first 90 days — before the new RM has had time to build any real connection. The bank had no warning, no preparation, and no strategy. It had a Salesforce record with 47 fields and a note that said 'good meeting'.",
+    insight:"RM flight risk is predictable 6–12 months before resignation — from the same signals that predict any employee departure: declining activity intensity, reducing new business origination, shorter interaction durations, increasing admin-to-client-time ratio, reduced participation in internal forums. The bank can see this coming. It chooses not to look.",
+    mechanism:"A <b>Coverage Succession Engine</b> with two components: a flight risk model for RMs (built from activity metadata, new business pipeline trajectory, and engagement signals) and a pre-emptive relationship transfer protocol. When an RM enters a high flight-risk window, a quiet succession programme begins: a second banker is introduced into key client meetings under a natural pretext, senior leadership touchpoints are scheduled, relationship breadth is deliberately widened. When the RM does leave — or is moved — the client has already met their successor. The transition is warm, not cold.",
+    demo:"Show RM activity dashboard. One RM: flight risk score 0.78 — new business pipeline empty for 4 months, meeting durations shortening, internal Slack activity declining. Book value: £380M AUM. Succession programme triggered quietly: 6 key clients identified for warm introduction over next 90 days. Senior leader scheduled for 3 client dinners. When RM resigns 11 weeks later: 6 of the 8 highest-value clients have already met the successor. Handover churn: 12% vs the industry average 34%.",
+    impact_detail:"Large bank with 200 senior RMs managing £40B AUM. Annual RM attrition: 15% = 30 RMs departing per year. Average book value: £200M. Industry handover churn: 34% = £68M per departing RM lost on average. 30 RMs × £68M = £2.04B in at-risk AUM per year. Reducing handover churn to 12% through pre-emptive succession = saving 22% of £2.04B = £448M AUM retained. Revenue impact: £150–600M depending on fee structure.",
+    quote:"'We knew this RM was leaving. Their pipeline had been empty for four months. We did nothing. They resigned on a Tuesday. By Friday three clients had called asking to follow them. We had no succession plan. We had a Salesforce record.'"
+  },
+];
+
+const contactIdeas = [
+  {
+    theme:"Contacts & AI",
+    themeColor:{bg:"#EEEDFE",tc:"#3C3489"},
+    killTag:"Contact map blindness",
+    impact:"£200–700M",
+    impactWhat:"in deals lost to contacts the bank never knew existed",
+    title:"Your banker knows the CFO. The decision was made by the CFO's deputy, the Head of Treasury, and a board member you've never met. You lost the mandate.",
+    sting:"In every significant banking relationship, the person your banker talks to is not the person who makes the decision. The CFO takes the call. The Head of Treasury runs the RFP. The board risk committee approves the mandate. The company's non-executive who used to work at a competitor has an informal veto. Your banker knows one of these people. The mandate goes elsewhere and nobody understands why.",
+    problem:"Contact records in CRM are populated by bankers recording who they met. They record who they met. They do not map who matters — who influences decisions, who has informal power, who the hidden champion or hidden blocker is. The contact record is a rolodex. What's needed is an influence map. These are completely different things and no CRM has ever built the second one.",
+    insight:"Decision influence in corporate banking is not a hierarchy — it is a network. The formal org chart shows reporting lines. The real decision network shows who calls whom before a mandate is awarded. Mapping this network from observable signals — who attends which meetings, who cc's whom on which emails, who the RM's contact defers to when pushed on a decision — produces an influence map that is worth more than the org chart. Banks have the signals. Nobody has built the map.",
+    mechanism:"A <b>Contact Intelligence Graph</b> — built from interaction metadata, meeting attendance records, email thread participants, and external data sources (LinkedIn role changes, board appointments, conference appearances). For each client organisation, the system infers: who are the formal decision-makers, who are the informal influencers, who has a relationship with a competitor bank (detectable from public data), and who is currently uncovered — a person who matters to the decision but has never been contacted by anyone at the bank. Coverage gaps in the contact map are surfaced as explicit risks: 'The Head of Treasury at this client has attended 4 deal-related meetings. You have never spoken to them.'",
+    demo:"Show a client deal in progress — a £500M debt mandate. RM's contact map: CFO (primary), one treasury analyst. Apply contact intelligence graph: Head of Treasury (attends all deal meetings, never contacted by bank), Group Treasurer (joined 8 months ago from a competitor bank — known relationship with competitor's DCM team), non-executive board member who chairs risk committee (final approver, zero bank contact). The deal is lost to the competitor. Post-mortem: the Group Treasurer recommended their former bank. The bank had 8 months of warning in the public data. Nobody looked.",
+    impact_detail:"A corporate bank winning 30% of mandates on a £10B annual pipeline. Contact intelligence improves win rate by 8 percentage points (to 38%) through better stakeholder mapping = £800M additional mandates won × average 0.5% fee = £4M additional fee income. Across a large bank's full corporate banking business: £200–700M in incremental revenue from mandates that would otherwise have been lost to undetected stakeholder dynamics.",
+    quote:"'The Group Treasurer came from our competitor. They'd worked together for 6 years. That information was on LinkedIn on the day they were appointed. We found out when we lost the mandate.'"
+  },
+  {
+    theme:"Contacts & Client",
+    themeColor:{bg:"#FAEEDA",tc:"#633806"},
+    killTag:"Contact decay",
+    impact:"£100–400M",
+    impactWhat:"in relationships with stale, wrong, or ghost contacts",
+    title:"43% of the contacts in your CRM have left the company. Your bankers are still sending them deal updates.",
+    sting:"People move. In financial services and corporate sectors, the average tenure in a role is 2.8 years. Your CRM was last systematically updated — if ever — in a data cleansing project 3 years ago. Every day, your bankers are reaching out to people who have left, been promoted out of relevance, or moved to a competitor. Every stale contact is a missed relationship with their replacement and a conversation you are not having with whoever now holds the influence.",
+    problem:"Contact decay is not a data quality problem. It is a coverage problem. When a contact leaves a client organisation, three things happen that your bank should care about: the departing contact moves to a new role where they may be a new client or a new influencer, the replacement arrives and has no relationship with your bank, and the relationship your banker built over years of trust is suddenly in the hands of someone who has never heard of them. Banks manage none of these transitions. They don't even know they're happening.",
+    insight:"Contact movement is detectable before it becomes a problem — from LinkedIn role changes, regulatory change-of-control notifications, Companies House filings, industry press. A contact who changes role is a three-way opportunity: retain the relationship through their new position, build a relationship with their replacement before a competitor does, and understand what their departure signals about the client organisation's direction. The signal is public. The opportunity is time-sensitive. The bank is not watching.",
+    mechanism:"A <b>Contact Vitality Monitor</b> — a continuous feed of contact movement signals from public data sources, cross-referenced against the CRM contact book. When a key contact moves: the RM receives an alert within 48 hours, a congratulatory outreach is drafted automatically, the replacement contact is identified and a coverage gap is flagged, and the departing contact's new role is assessed for relationship opportunity. The CRM contact record is automatically updated. The RM never sends a deal update to someone who left 6 months ago.",
+    demo:"Show a client with 12 contacts in CRM. Run contact vitality monitor: 5 have changed roles in the last 18 months — 2 have left the company entirely, 1 has been promoted to CFO (their RM has not yet spoken to them in their new capacity), 1 has moved to a direct competitor bank (now a relationship risk), 1 has moved to a target prospect (now a relationship opportunity). None of these events are reflected in the CRM. The RM's last contact with the new CFO was when they were still a VP — a relationship that needs resetting upward. Show the alert the RM should have received on the day the promotion was announced.",
+    impact_detail:"Bank with 5,000 corporate contacts across 500 clients. Average annual contact movement: 35% = 1,750 contact changes per year going untracked. Each untracked departure: missed relationship with replacement (avg 12 months to build cold), missed congratulatory touchpoint with the mover, missed competitive risk assessment. Conservative revenue value of proactively managing 1,750 transitions vs missing them: £50–200K per client relationship per year in retained and new business. Total: £100–400M.",
+    quote:"'We have been sending the monthly market commentary to James for 14 months. James left the company 14 months ago. His replacement — who now runs all treasury decisions — has never heard from us. A competitor called them on their first week.'"
+  },
+  {
+    theme:"Contacts & Data",
+    themeColor:{bg:"#E6F1FB",tc:"#0C447C"},
+    killTag:"The single-threaded trap",
+    impact:"£250–800M",
+    impactWhat:"in concentration risk from single-contact client relationships",
+    title:"Your most valuable client relationship runs through one person on each side. That is not a relationship. That is a thread. And threads snap.",
+    sting:"In relationship banking, the deepest relationships are often the most dangerous ones — because they are single-threaded. One RM knows one client contact. That contact is the entire relationship. When either of them moves, is sick, has a conflict, or leaves — the relationship does not transfer. It snaps. And a relationship that took 8 years to build disappears in a quarter.",
+    problem:"Single-threaded relationships are invisible in CRM. The system shows the contact, shows the activity, shows the revenue. It does not show the fragility — that this entire relationship depends on two specific individuals remaining in their roles, remaining on good terms, and remaining available. In a world where RM tenure averages 3.2 years and client-side contact tenure averages 2.8 years, a single-threaded relationship has an expected life of under 3 years. Every bank is building 3-year relationships and calling them strategic partnerships.",
+    insight:"Relationship thread count is measurable from CRM data: how many distinct bankers have had meaningful interactions with this client, how many distinct client contacts have been engaged, what is the seniority spread across both sides, have any bank-side product specialists been introduced? A relationship with 1 banker and 1 client contact, with no specialist involvement and no senior leader engagement, has a thread count of 1. It is one resignation away from starting over. That is a risk that belongs on a dashboard.",
+    mechanism:"A <b>Relationship Thread Analyser</b> — a live fragility score per client relationship, built from: number of distinct bank-side contacts engaged, number of distinct client-side contacts covered, seniority spread on both sides, product specialist involvement, senior leadership touchpoints in the last 12 months, and time since last multi-person interaction. Clients with a thread count below the threshold trigger a deliberate relationship widening programme: introductions designed as natural value-adds ('I'd like to bring our Head of Sustainable Finance to our next meeting — given what you said about your ESG reporting obligations'), not as transparent risk management.",
+    demo:"Show the thread analysis for 10 top clients. Six have a thread count of 1 or 2. The highest-AUM client: £180M, thread count 1.2. One RM, one client contact (CFO), no specialist involvement, no senior leader meeting in 22 months. Fragility score: critical. Now show the RM's pipeline for the next quarter: no multi-stakeholder meetings planned, no specialist introductions, no senior leadership engagement. The relationship is a single thread, stretched over £180M. Nobody in the bank knows.",
+    impact_detail:"Bank with £30B in managed AUM. If 20% of relationships are critically single-threaded = £6B in fragile AUM. Thread-widening programme reduces attrition on these relationships by 40% over 2 years = £2.4B in retained AUM. At 0.6% average revenue yield = £14.4M annual revenue protected. But the compounding effect — relationships that survive 10 years instead of 3 — makes the long-term value an order of magnitude larger.",
+    quote:"'This client has been with us for 8 years. The entire relationship runs through one RM and one CFO. The RM is being headhunted. The CFO is retiring in April. We have £180M and zero relationship depth. We built a thread and called it a partnership.'"
+  },
+];
+
+function makeCard(idea) {
+  const c = document.createElement("div");
+  c.className = "card";
+  c.innerHTML = `<div class="top">
+    <div class="tl">
+      <div class="tagrow">
+        <span class="tag" style="background:${idea.themeColor.bg};color:${idea.themeColor.tc}">${idea.theme}</span>
+        <span class="tag" style="background:#EEEDFE;color:#3C3489">${idea.killTag}</span>
+      </div>
+      <div class="impact">${idea.impact} <span style="font-size:12px;font-weight:400;color:var(--color-text-secondary)">${idea.impactWhat}</span></div>
+      <div class="title">${idea.title}</div>
+      <div class="sting">${idea.sting}</div>
+    </div>
+    <span class="chev">&#8964;</span>
+  </div>
+  <div class="body">
+    <div class="sec"><div class="sl">The actual problem</div><div class="sv">${idea.problem}</div></div>
+    <div class="sec"><div class="sl">The insight nobody acted on</div><div class="sv">${idea.insight}</div></div>
+    <div class="sec"><div class="sl">How it works</div><div class="sv">${idea.mechanism}</div></div>
+    <div class="flash"><div class="sl">The demo that proves it</div><div class="sv">${idea.demo}</div></div>
+    <div class="money"><div class="sl">Business impact</div><div class="sv">${idea.impact_detail}</div></div>
+    <div class="sec">
+      <div class="sl">The line that wins the room</div>
+      <div class="q">${idea.quote}</div>
+      <button class="devbtn" onclick="sendPrompt('Build a full innovation week pitch document for the banking CRM idea: ${idea.title.replace(/'/g,"\\'").replace(/"/g,'\\"')}')">Build full pitch doc ↗</button>
+    </div>
+  </div>`;
+  c.querySelector(".top").addEventListener("click", () => c.classList.toggle("open"));
+  return c;
+}
+
+const cg = document.getElementById("coverage-grid");
+coverageIdeas.forEach(i => cg.appendChild(makeCard(i)));
+
+const ctg = document.getElementById("contacts-grid");
+contactIdeas.forEach(i => ctg.appendChild(makeCard(i)));
+</script>

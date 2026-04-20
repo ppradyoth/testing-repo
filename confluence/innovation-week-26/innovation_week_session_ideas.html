@@ -1,0 +1,252 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.container { padding: 1rem 0; }
+.filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.5rem; }
+.filter-btn { font-size: 12px; padding: 5px 12px; border-radius: 20px; border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); cursor: pointer; transition: all 0.15s; }
+.filter-btn.active { background: var(--color-background-tertiary); color: var(--color-text-primary); border-color: var(--color-border-primary); font-weight: 500; }
+.filter-btn:hover { border-color: var(--color-border-primary); }
+.ideas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+.idea-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; cursor: pointer; transition: border-color 0.15s; display: flex; flex-direction: column; gap: 10px; }
+.idea-card:hover { border-color: var(--color-border-primary); }
+.idea-card.expanded { border-color: var(--color-border-secondary); }
+.pillar-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 20px; width: fit-content; }
+.idea-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); line-height: 1.4; }
+.idea-hook { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+.expand-section { display: none; border-top: 0.5px solid var(--color-border-tertiary); padding-top: 10px; gap: 8px; flex-direction: column; }
+.idea-card.expanded .expand-section { display: flex; }
+.detail-row { display: flex; gap: 8px; align-items: flex-start; }
+.detail-label { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; min-width: 72px; padding-top: 2px; }
+.detail-val { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+.send-btn { font-size: 12px; padding: 5px 12px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-secondary); color: var(--color-text-secondary); cursor: pointer; align-self: flex-start; margin-top: 2px; }
+.send-btn:hover { color: var(--color-text-primary); border-color: var(--color-border-primary); }
+.section-header { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; margin: 1.5rem 0 0.75rem; }
+.count-bar { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 1rem; }
+</style>
+
+<div class="container">
+  <div class="filter-bar" id="filters"></div>
+  <div class="count-bar" id="count-bar"></div>
+  <div class="ideas-grid" id="grid"></div>
+</div>
+
+<script>
+const pillars = [
+  { id: "ai", label: "Data & AI", color: "#B5D4F4", text: "#0C447C", bg: "#E6F1FB" },
+  { id: "eng", label: "Tech: Engineering", color: "#9FE1CB", text: "#085041", bg: "#E1F5EE" },
+  { id: "cloud", label: "Tech: Cloud & Infra", color: "#C0DD97", text: "#27500A", bg: "#EAF3DE" },
+  { id: "cx", label: "Customer & Client", color: "#FAC775", text: "#633806", bg: "#FAEEDA" },
+  { id: "emp", label: "Employee & Talent", color: "#F4C0D1", text: "#72243E", bg: "#FBEAF0" },
+  { id: "sec", label: "Protect the Firm", color: "#F5C4B3", text: "#712B13", bg: "#FAECE7" },
+];
+
+const ideas = [
+  {
+    pillar: "ai",
+    title: "The Explainability Audit: Making AI Decisions Defensible to Regulators",
+    hook: "What happens when a regulator asks 'why did your model deny that loan?' — and you can't answer? Live walkthrough of building explainability layers into AI pipelines.",
+    format: "Workshop + demo",
+    wow: "Delegates leave with a checklist they can use Monday morning",
+    angle: "Compliance + AI in one breath — rare combo that gets risk teams in the room too"
+  },
+  {
+    pillar: "ai",
+    title: "Shadow Analysts No More: AI Copilots for Research & Deal Structuring",
+    hook: "Junior analysts spend 60% of their time on data gathering. What if they didn't? A live demo of AI co-pilots built inside existing banking workflows.",
+    format: "Demo + panel",
+    wow: "Show a real deal memo drafted in 4 minutes vs 4 hours",
+    angle: "Immediately relatable to front-office and investment banking teams"
+  },
+  {
+    pillar: "ai",
+    title: "Synthetic Data: The Secret Weapon for Compliant AI Training in Banking",
+    hook: "You can't train models on real customer data. So what do you train on? A deep-dive into synthetic data generation that satisfies both ML teams and privacy officers.",
+    format: "Talk + Q&A",
+    wow: "Busts the myth that 'we can't do AI because of data restrictions'",
+    angle: "Uniquely banking — no other industry has this constraint as acutely"
+  },
+  {
+    pillar: "eng",
+    title: "Death to the Deployment Queue: How We Shipped 10x Faster Without Breaking Prod",
+    hook: "A post-mortem and forward-mortem in one session — what slowed us down, what we changed, and what we'd do differently if we started today.",
+    format: "Case study talk",
+    wow: "Honest, warts-and-all storytelling — rare in banking circles",
+    angle: "Engineering velocity is everyone's problem; this makes it everyone's win"
+  },
+  {
+    pillar: "eng",
+    title: "Platform Engineering vs. DevOps: Which Model Actually Works at Scale?",
+    hook: "Two practitioners, two strong opinions, one stage. An honest debate on what internal developer platforms should look like in a regulated financial environment.",
+    format: "Debate format",
+    wow: "Debate format keeps energy high and generates strong audience participation",
+    angle: "No fluff — practitioners telling it straight"
+  },
+  {
+    pillar: "eng",
+    title: "Feature Flags as Risk Controls: Engineering Decisions That Compliance Loves",
+    hook: "Turns out the same mechanism that lets you A/B test a UI is a powerful risk control tool. How we reframed feature flagging for a banking audience — and got sign-off faster.",
+    format: "Talk + demo",
+    wow: "Creates a shared vocabulary between engineering and risk teams",
+    angle: "Unique banking spin on an engineering-native concept"
+  },
+  {
+    pillar: "cloud",
+    title: "The £0 Cloud Bill Myth: Real Cost Engineering in a Financial Services Context",
+    hook: "Everyone talks about cloud savings. Few actually achieve them. A brutally honest look at FinOps practices that moved the needle — and the ones that didn't.",
+    format: "Talk + live teardown",
+    wow: "Show a real (anonymised) cloud bill and explain what each line actually means",
+    angle: "CFOs will share this with their CTOs before the week is out"
+  },
+  {
+    pillar: "cloud",
+    title: "Resilience by Design: What a Zero-Downtime Deployment Actually Costs",
+    hook: "Five nines sounds great until you see the architectural overhead required. A frank conversation about where to invest in resilience and where 'good enough' is good enough.",
+    format: "Talk + whiteboard",
+    wow: "Challenges the default assumption that maximum resilience is always the right goal",
+    angle: "Directly relevant to banking's operational resilience regulatory requirements"
+  },
+  {
+    pillar: "cx",
+    title: "Friction Forensics: Finding the Invisible Moments That Lose Customers",
+    hook: "Walk through a real customer journey — step by step — and identify the micro-frictions that nobody notices but everyone experiences. Then design them away live.",
+    format: "Interactive workshop",
+    wow: "Audience maps their own product journeys; leaves with real findings",
+    angle: "Visceral, hands-on — people feel the friction rather than just hear about it"
+  },
+  {
+    pillar: "cx",
+    title: "Hyper-Personalisation Without Crossing the Line: The New Rules of Banking CX",
+    hook: "Customers want to feel known, not watched. How do you build personalisation engines that feel warm rather than creepy — especially when you hold sensitive financial data?",
+    format: "Panel",
+    wow: "Brings ethics, product, and data science into a single conversation",
+    angle: "The tension between 'personalised' and 'surveillance' is uniquely acute in banking"
+  },
+  {
+    pillar: "cx",
+    title: "Complaints as a Product Signal: Turning Dissatisfaction into a Roadmap",
+    hook: "Your complaints data is the most honest feedback you'll ever get. A session on mining complaint patterns to drive product decisions — with real examples from financial services.",
+    format: "Talk + data demo",
+    wow: "Reframes a cost centre (complaints handling) as a strategic asset",
+    angle: "Banks receive thousands of complaints — this makes them useful"
+  },
+  {
+    pillar: "emp",
+    title: "The 4-Day Week Experiment: What We Learned (and What We'd Never Do Again)",
+    hook: "A candid session from a team that piloted a compressed work week — the productivity gains, the edge cases, and the cultural shifts nobody warned us about.",
+    format: "Fireside chat",
+    wow: "Honest reflection beats polished PR — audiences trust it more",
+    angle: "Talent attraction and retention is a critical banking challenge right now"
+  },
+  {
+    pillar: "emp",
+    title: "AI as a Colleague: Designing Human-AI Collaboration for Knowledge Workers",
+    hook: "It's not about replacement — it's about redesigning roles. A practical workshop on mapping which tasks should go to AI, which to humans, and which need both.",
+    format: "Workshop",
+    wow: "Participants redesign their own job descriptions live",
+    angle: "Addresses anxiety head-on while building practical skills"
+  },
+  {
+    pillar: "emp",
+    title: "Internal Mobility as Innovation: How Moving People Moves the Needle",
+    hook: "The best innovation often comes from people who've worked across multiple domains. How do you design talent pathways that make internal mobility the default — not the exception?",
+    format: "Talk + panel",
+    wow: "Challenges the assumption that hiring externally is always the answer",
+    angle: "Banking's siloed structure makes this especially impactful if solved"
+  },
+  {
+    pillar: "sec",
+    title: "Red Team as a Service: What Happens When We Attack Ourselves",
+    hook: "A live (safe) reconstruction of an internal red team exercise — the vulnerabilities found, the fixes deployed, and the cultural shift that followed.",
+    format: "Talk with live replay",
+    wow: "Storytelling format with real tension — audiences lean in",
+    angle: "Makes security visceral and relatable rather than abstract and compliance-driven"
+  },
+  {
+    pillar: "sec",
+    title: "Secure by Default: Building Security In Before the Architecture Review",
+    hook: "Security reviews at the end of delivery cycles are too late. How do you build threat modelling and security design into sprint zero — without slowing engineers down?",
+    format: "Workshop",
+    wow: "Leaves teams with a 30-minute threat modelling template they can use immediately",
+    angle: "Bridges the culture gap between security and engineering teams"
+  },
+  {
+    pillar: "sec",
+    title: "The Human Firewall Reloaded: Why Training Alone Doesn't Change Behaviour",
+    hook: "Phishing simulations and e-learning haven't moved the needle. A behavioural science-informed approach to building security habits that actually stick in a busy banking environment.",
+    format: "Talk + behavioural demo",
+    wow: "Brings psychology into a security conversation — unexpected and memorable",
+    angle: "Fresh angle that feels innovative rather than compliance-checkbox"
+  },
+];
+
+let activeFilter = "all";
+
+function renderFilters() {
+  const bar = document.getElementById("filters");
+  const allBtn = document.createElement("button");
+  allBtn.className = "filter-btn active";
+  allBtn.textContent = "All pillars";
+  allBtn.dataset.id = "all";
+  allBtn.onclick = () => setFilter("all");
+  bar.appendChild(allBtn);
+  pillars.forEach(p => {
+    const btn = document.createElement("button");
+    btn.className = "filter-btn";
+    btn.textContent = p.label;
+    btn.dataset.id = p.id;
+    btn.onclick = () => setFilter(p.id);
+    bar.appendChild(btn);
+  });
+}
+
+function setFilter(id) {
+  activeFilter = id;
+  document.querySelectorAll(".filter-btn").forEach(b => {
+    b.classList.toggle("active", b.dataset.id === id);
+  });
+  renderGrid();
+}
+
+function getPillar(id) { return pillars.find(p => p.id === id); }
+
+function renderGrid() {
+  const grid = document.getElementById("grid");
+  const countBar = document.getElementById("count-bar");
+  grid.innerHTML = "";
+  const filtered = activeFilter === "all" ? ideas : ideas.filter(i => i.pillar === activeFilter);
+  countBar.textContent = filtered.length + " session idea" + (filtered.length !== 1 ? "s" : "");
+  filtered.forEach((idea, idx) => {
+    const p = getPillar(idea.pillar);
+    const card = document.createElement("div");
+    card.className = "idea-card";
+    card.innerHTML = `
+      <div class="pillar-badge" style="background:${p.bg};color:${p.text};">${p.label}</div>
+      <div class="idea-title">${idea.title}</div>
+      <div class="idea-hook">${idea.hook}</div>
+      <div class="expand-section">
+        <div class="detail-row">
+          <span class="detail-label">Format</span>
+          <span class="detail-val">${idea.format}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Wow factor</span>
+          <span class="detail-val">${idea.wow}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Why it'll land</span>
+          <span class="detail-val">${idea.angle}</span>
+        </div>
+        <button class="send-btn" onclick="sendPrompt('Help me develop a full session proposal for: ${idea.title.replace(/'/g,"\\'")}')">Develop this into a proposal ↗</button>
+      </div>
+    `;
+    card.addEventListener("click", () => {
+      card.classList.toggle("expanded");
+    });
+    grid.appendChild(card);
+  });
+}
+
+renderFilters();
+renderGrid();
+</script>
